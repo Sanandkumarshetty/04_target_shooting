@@ -22,17 +22,22 @@ def main():
     engine = GameEngine()
     running = True
     while running:
+        # TASK 4 UPDATE: measure real elapsed time for the round countdown.
+        delta_time = clock.tick(60) / 1000.0
+        engine.update(delta_time)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 engine.handle_click(event.pos)
+            # TASK 4 UPDATE: R starts a fresh round after the final score screen.
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_r and engine.round_over:
+                engine.reset_round()
 
-        engine.update()
         engine.draw(screen, font)
 
         pygame.display.flip()
-        clock.tick(60)
 
     pygame.quit()
 
